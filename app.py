@@ -197,8 +197,8 @@ def editItem(category_name, item_name):
                         item_name=item.name))
     else:
         categories = session.query(Category).all()
-        loggedIn = 'access_token' in login_session and login_session['access_\
-                    token'] is not None
+        loggedIn = 'access_token' in login_session \
+                    and login_session['access_token'] is not None
         name = ''
         if loggedIn:
             name = login_session['name']
