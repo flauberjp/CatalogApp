@@ -4,14 +4,14 @@
 ## About
 This project show a catalog of sport items, grouped in all categories 
 (previously recorded), where the user can navigate to see the items and their 
-details, and, when logged in, and he can edit it too.
+details, and, when logged in, he can edit it too. The login used Google as security provider, so the user is going to be a Google user in the end.
 
 ## How to run this application
 1. Install Python 3.6.5 32-bit, make sure it is in your path;
 2. Install Python Flask framework v1.0.2, using pip, along with all packates listed on
 "Python packages used" section; 
 3. Install PostgreSQL 10 database, you will need its admin username and password later;
-4. Clone this project using git, so in the end you will be at its root folder. 
+4. Clone this project using git, so in the end you will be at its root folder later. 
 Git command: git clone https://github.com/flauberjp/CatalogApp.git;
 5. Update the connection string by change the value of db_string defined on file
 database_setup.py;
