@@ -1,0 +1,24 @@
+{% extends "catalog/layout.html" %}
+
+{% block main %}
+
+    <main role="main">
+      <div class="container card">
+        <!-- Example row of columns -->
+        <div class="row pt-1 pl-1 pr-1 pb-1">
+            <div class="col">
+                <h2>Delete Item</h2>
+                
+                <form action="{{ url_for('deleteItem', category_name=category_name, item_name=item_name) }}" method="post">
+                    <p>Are you sure you want to delete?</p>
+                    <input type='submit' value='Submit'>
+                    <a href="{{ url_for('showItems', category_name=category_name, item_name=item_name) }}">Cancel</a>
+                </form>
+            </div>
+        </div>
+
+      </div> <!-- /container -->
+
+    </main>
+
+{% endblock %}

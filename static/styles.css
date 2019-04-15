@@ -1,0 +1,48 @@
+body {
+  font-family: sans-serif;
+  background-color: gray;
+}
+
+h1 {
+  color: white;
+}
+
+h2 {
+  color: rgb(6, 6, 58);
+}
+
+h3 {
+  color: orange;
+}
+
+header {
+  background-color: rgb(6, 6, 58);
+}
+
+.my-margin {
+  margin-top: 1%;
+  margin-bottom: 1%;
+}
+
+.my-auto {
+    margin-top: auto;
+    margin-bottom: auto;  
+}
+
+.btn-primary {
+  background-color: orange;
+}
+
+h3 i {
+    color: gray;
+}
+
+div strong {
+    color: white;
+}
+
+.login-logout-button-size {
+    height: 46px;
+    width: 191px;
+    
+}

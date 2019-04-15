@@ -1,0 +1,36 @@
+{% extends "catalog/layout.html" %}
+
+{% block main %}
+
+    <main role="main">
+      <div class="container card">
+        <!-- Example row of columns -->
+        <div class="row pt-1 pl-1 pr-1 pb-1">
+          <div class="col-sm-12">
+            <h2>{{item.name}} </h2>
+            <p>
+                {{item.description}}
+            </p>
+
+            {% if loggedIn %}
+                <div class="d-inline">
+                    <a href="{{ url_for('editItem', category_name=category_name, item_name=item.name)}}">
+                        <h3 class="d-inline">
+                            Edit
+                        </h3>
+                    </a>
+                    |
+                    <a href="{{ url_for('deleteItem', category_name=category_name, item_name=item.name)}}">
+                        <h3 class="d-inline">
+                            Delete
+                        </h3>
+                    </a>
+                </div>
+            {% endif %}
+          </div>
+        </div>
+
+      </div> <!-- /container -->
+
+    </main>
+{% endblock %}

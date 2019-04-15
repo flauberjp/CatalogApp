@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html itemscope itemtype="http://schema.org/Article">
+<head>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js">
+    </script>
+    <script src="https://apis.google.com/js/client:platform.js?onload=start" async defer>
+    </script>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../../../favicon.ico">
+
+    <title>Catalog App</title>
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/4.0/examples/jumbotron/">
+
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <!-- Custom styles for this template -->
+    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='styles.css') }}">
+
+    <script>
+        function start() {
+            gapi.load('auth2', function () {
+                auth2 = gapi.auth2.init({
+                    client_id: '889397656154-jhorpqn4h07olae2esmljabahsjrbo6v.apps.googleusercontent.com'
+                });
+            });
+        }
+    </script>
+    </head>
+
+    <body>
+
+    <header>
+        <div class="container">
+            <div class="row">
+                <div class="col justify-content-middle d-inline">
+                    <a href="{{ url_for('showCatalog')}}">
+                        <h1 class="d-inline">
+                            Catalog App
+                        </h1>
+                    </a>
+                    
+                    <div class="float-right">
+                        {% if loggedIn %}
+                        <button type="button" class="btn btn-link d-inline my-margin" onclick="return;">                            
+                            {{ name }}
+                        </button>                    
+                        <a href="{{ url_for('showLogout')}}">
+                            <button type="button" class="btn btn-primary d-inline my-margin login-logout-button-size">                            
+                                Logout
+                            </button>
+                        </a>
+                        
+                        {% else %}
+                        <a>
+                            <button id="signinButton" type="button" class="btn btn-primary d-inline my-margin login-logout-button-size">
+                                Login with Google    
+                            </button>
+                        </a>
+                        
+                        {% endif %}    
+                    </div>
+                    
+
+                </div>
+            </div>
+        </div>
+    </header>
+    {% block main %}
+    {% endblock %}
+
+    <script>
+            $('#signinButton').click(function () {
+                // signInCallback defined in step 6.
+                auth2.grantOfflineAccess().then(signInCallback);
+            });
+    
+            function signInCallback(authResult) {
+                if (authResult['code']) {
+    
+                    // Hide the sign-in button now that the user is authorized, for example:
+                    $('#signinButton').attr('style', 'display: none');
+    
+                    // Send the one-time-use code to the server, if the server responds, 
+                    // write a 'login successful' message to the web page and then 
+                    // redirect back to the main Catalog page
+                    $.ajax({
+                        type: 'POST',
+                        url: '/storeauthcode?state={{STATE}}',
+                        // Always include an `X-Requested-With` header in every AJAX request,
+                        // to protect against CSRF attacks.
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest'
+                        },
+                        contentType: 'application/octet-stream; charset=utf-8',
+                        success: function (result) {
+                            // Handle or verify the server response if necessary.
+                            if (result) {
+                                window.location.href = "/catalog";
+                            } else if (authResult["error"]) {
+                                console.log("There was an error: " + authResult["error"]);
+                            } else {
+                                console.log(
+                                    "Failed to make a server-side call. Check your configuration and console."
+                                );
+                            }
+                        },
+                        processData: false,
+                        data: authResult['code']
+                    });
+                } else {
+                    // There was an error.
+                }
+            }
+        </script>
+    
+        <!-- Optional JavaScript -->
+        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    
+      </body>
+
+
+</html>

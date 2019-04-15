@@ -1,0 +1,56 @@
+{% extends "catalog/layout.html" %}
+
+{% block main %}
+
+    <main role="main">
+      <div class="container card">
+        <!-- Example row of columns -->
+        <div class="row pt-1 pl-1 pr-1 pb-1">
+          <div class="col-sm-6 border-right">
+            <h2>Categories</h2>
+            {% for category in categories %}
+            <a href="{{ url_for('showItems', category_name = category.name, item_name = 'items')}}">
+                <h3>
+                    {{category.name}}
+                </h3>
+            </a>
+            {% endfor %}
+          </div>
+          <div class="col-sm-6 ">
+            {% if loggedIn %}
+            <a href="{{ url_for('newItem')}}">
+                <h3>
+                    Add Item
+                </h3>
+            </a>
+            {% endif %}
+
+
+            <h2>Latest Items</h2>
+            {% for item in items %}
+                <div >
+                    <a href="{{ url_for('showItems', category_name = item.category.name, item_name = item.name)}}">
+                        <h3 class="d-inline">
+                            
+                                {{item.name}}
+                            
+                        </h3>
+                    </a>
+                    <a href="{{ url_for('showItems', category_name = item.category.name, item_name = 'items')}}">
+                        <h3 class="d-inline">
+                            <i>
+                                ({{item.category.name}})
+                            </i>
+                        </h3>
+                    </a>
+                </div>
+            {% endfor %}
+          </div>
+        </div>
+
+      </div> <!-- /container -->
+
+    </main>
+
+
+    {% endblock %}

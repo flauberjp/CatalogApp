@@ -1,0 +1,47 @@
+{% extends "catalog/layout.html" %}
+
+{% block main %}
+
+    <main role="main">
+      <div class="container card">
+        <!-- Example row of columns -->
+        <div class="row pt-1 pl-1 pr-1 pb-1">
+          <div class="col-sm-6 border-right">
+            <h2>Categories</h2>
+            {% for category in categories %}
+            <a href="{{ url_for('showItems', category_name = category.name, item_name = 'items')}}">
+                <h3>
+                    {{category.name}}
+                </h3>
+            </a>
+            {% endfor %}
+          </div>
+          <div class="col-sm-6">
+            {% if items.count() == 0 %}
+                <h2>{{selected_category_name}} (No items) </h2>
+            {% elif items.count() == 1 %}
+                <h2>{{selected_category_name}} ({{items.count()}} item) </h2>
+            {% else %}
+                <h2>{{selected_category_name}} ({{items.count()}} items) </h2>
+            {% endif %}
+
+
+            {% for item in items %}
+                <div>
+                    <a href="{{ url_for('showItems', category_name = item.category.name, item_name = item.name)}}">
+                        <h3 class="d-inline">
+                            
+                                {{item.name}}
+                            
+                        </h3>
+                    </a>
+                </div>
+            {% endfor %}
+          </div>
+        </div>
+
+      </div> <!-- /container -->
+
+    </main>
+
+{% endblock %}
