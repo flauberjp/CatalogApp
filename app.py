@@ -49,11 +49,10 @@ def storeauthcode():
     CLIENT_SECRET_FILE = 'client_secret.json'
 
     # Exchange auth code for access token, refresh token, and ID token
+    url_cred_retrieve = 'https://www.googleapis.com/auth/drive.appdata'
 
     credentials = credentials_from_clientsecrets_and_code(CLIENT_SECRET_FILE,
-                                                          ['https://www.google\
-                                                           apis.com/auth/drive.\
-                                                           appdata',
+                                                          [url_cred_retrieve,
                                                            'profile', 'email'],
                                                           auth_code)
 
