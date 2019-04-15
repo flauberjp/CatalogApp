@@ -15,11 +15,11 @@ details, and, when logged in, he can edit it too. The login used Google as secur
 Git command: git clone https://github.com/flauberjp/CatalogApp.git;
 5. Update the connection string by change the value of db_string defined on file
 database_setup.py;
-5. Run database_setup.py file as a python program, this will create a database
+6. Run database_setup.py file as a python program, this will create a database
 named ItemCatalogDb. Command: python .\database_setup.py;
-6. Run data_seed.py file as a python program, this will create test data in the 
+7. Run data_seed.py file as a python program, this will create test data in the 
 database. Command: python .\data_seed.py; and
-7. Run app.py as a Python Flask. Command: flask run
+8. Run app.py as a Python Flask. Command: flask run
 
 PS: this application connect to google auth service, so the information 
 available at client_secret.json and the client_id value of the file layout.html (around line 30)
