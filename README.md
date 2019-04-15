@@ -6,6 +6,11 @@ This project show a catalog of sport items, grouped in all categories
 (previously recorded), where the user can navigate to see the items and their 
 details, and, when logged in, he can edit it too. The login used Google as security provider, so the user is going to be a Google user in the end.
 
+## Demo
+
+[![Demonstration of this application running locally](https://i9.ytimg.com/vi/33OhFkO32p8/mq1.jpg?sqp=CNDh0-UF&rs=AOn4CLASFVjRmTdr_Fvpqk4RRlMrHEA_ng)](https://youtu.be/33OhFkO32p8)
+
+
 ## How to run this application
 1. Install Python 3.6.5 32-bit, make sure it is in your path;
 2. Install Python Flask framework v1.0.2, using pip, along with all packates listed on
