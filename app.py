@@ -171,8 +171,15 @@ def newItem():
                         item_name=request.form['name']))
     else:
         categories = session.query(Category).all()
+        loggedIn = 'access_token' in login_session \
+            and login_session['access_token'] is not None
+        name = ''
+        if loggedIn:
+            name = login_session['name']
         return render_template('catalog/newItem.html',
-                               categories=categories)
+                               categories=categories,
+                               loggedIn=loggedIn,
+                               name=name)
 
 
 # Edit an Item
