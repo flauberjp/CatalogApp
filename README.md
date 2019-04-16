@@ -72,6 +72,10 @@ their auth2 service;
 * static\styles.css: custom mstyle sheet; and 
 * templates\catalog: folder containing various Jinja templates used to render 
 this app. 
+* requirements.txt: Python packages list used by this project, generated using pip (command: 
+pip freeze > requirements.txt)
+
+And users wanting to run your project would simply run pip install -r requirements.txt to install all dependencies.
 
 ## References
 1. Using PostgreSQL through SQLAlchemy. URL: < https://www.compose.com/articles/using-postgresql-through-sqlalchemy/ >. Accessed by: Mar, 27th, 2019.
