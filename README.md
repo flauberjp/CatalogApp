@@ -33,12 +33,14 @@ must be valid. Refer to [10] for procedures.
 
 
 ## Python packages used
+Here is a list of some of the required packages used. For a complete list, check requirements.txt file for the completed list.
 * sqlalchemy, v1.2.11
 * sqlalchemy-utils, v0.33.11
 * google-api-python-client, v1.7.8
 * google-auth, v1.6.3
 * google-auth-oauthlib, v0.3.0
 * google-auth-httplib2, v0.0.3
+
 
 ## Routes
 /, which redirects to /catalog
