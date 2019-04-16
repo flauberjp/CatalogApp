@@ -14,6 +14,7 @@
                         <label for='name'>Title:</label>
                         <input type='text' size='30' name='name' id='name' class="form-control"
                             value="{{item.name}}"
+                            required pattern=".*\S+.*"
                         >
                     </div>
 
@@ -21,6 +22,7 @@
                         <label for='descripiton'>Description:</label>
                         <input type='text' size='30' name='description' id='description' class="form-control"
                           value="{{item.description}}"
+                          required pattern=".*\S+.*"
                         >
                     </div>
 
