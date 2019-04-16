@@ -12,6 +12,7 @@ details, and, when logged in, he can edit it too. The login used Google as secur
 
 
 ## How to run this application
+In order to access this web app using http://localhost:5000 URL (authorized one as it was configured on Google API), follow this procedure:
 1. Install Python 3.6.5 32-bit, make sure it is in your path;
 2. Install Python Flask framework v1.0.2, using pip, along with all packates listed on
 "Python packages used" section; 
@@ -24,7 +25,7 @@ database_setup.py;
 named ItemCatalogDb. Command: python .\database_setup.py;
 7. Run data_seed.py file as a python program, this will create test data in the 
 database. Command: python .\data_seed.py; and
-8. Run app.py as a Python Flask. Command: flask run
+8. Run app.py as a Python Flask, then access it by open http://localhost:5000 URL on your browser. Command: flask run
 
 PS: this application connect to google auth service, so the information 
 available at client_secret.json and the client_id value of the file layout.html (around line 30)
