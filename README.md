@@ -4,7 +4,10 @@
 ## About
 This project show a catalog of sport items, grouped in all categories 
 (previously recorded), where the user can navigate to see the items and their 
-details, and, when logged in, he can edit it too. The login used Google as security provider, so the user is going to be a Google user in the end.
+details. New item can be added when the user is logged in,
+and as the item owner, only him will be able to manage it(edit or delete). 
+The login used Google as security provider, so the user is going to 
+be a Google user in the end.
 
 ## Demo
 
