@@ -12,7 +12,7 @@
                 {{item.description}}
             </p>
 
-            {% if loggedIn %}
+            {% if enable_edit_and_delete_buttons %}
                 <div class="d-inline">
                     <a href="{{ url_for('editItem', category_name=category_name, item_name=item.name)}}">
                         <h3 class="d-inline">

@@ -3,7 +3,8 @@
 from flask import Flask, render_template, redirect
 from flask import url_for, jsonify, request, abort, make_response
 from flask import session as login_session
-from database_setup import db_string, db, Category, Item, session
+from sqlalchemy import or_, and_
+from database_setup import db_string, db, Category, Item, session, User
 import random
 import string
 import json
@@ -62,10 +63,39 @@ def storeauthcode():
     login_session['name'] = credentials.id_token['name']
     login_session['email'] = credentials.id_token['email']
 
+    # See if a user exists, if it doesn't make a new one
+    userId = getUserID(login_session['email'])
+    if userId is None:
+        userId = createUser(login_session)
+    
+    user = getUserInfo(userId)
+
+    print('User logged in: \n' +
+             '\t  Name: ' + user.name + '\n' + 
+             '\tE-mail: ' + user.email + '\n')
+
     response = make_response(json.dumps('OAuth code stored.'), 200)
     response.headers['Content-Type'] = 'application/json'
     return response
 
+def getUserID(email):
+    try:
+        user = session.query(User).filter_by(email=email).one()
+        return user.id
+    except:
+        return None
+
+def createUser(login_session):
+    newUser = User(name=login_session['name'], email=login_session[
+                   'email'])
+    session.add(newUser)
+    session.commit()
+    user = session.query(User).filter_by(email=login_session['email']).one()
+    return user.id
+
+def getUserInfo(user_id):
+    user = session.query(User).filter_by(id=user_id).first()
+    return user
 
 # Perfor logout
 
@@ -89,6 +119,12 @@ def redirectToShowCatalog():
 
 @app.route('/catalog', methods=['GET'])
 def showCatalog():
+    loggedIn = 'access_token' in login_session \
+        and login_session['access_token'] is not None
+    userId = None
+    if loggedIn:
+        userId = getUserID(login_session['email'])
+
     categories = session.query(Category).all()
     items = session.query(Item).join(Category).limit(8)
     loggedIn = 'access_token' in login_session \
@@ -107,7 +143,8 @@ def showCatalog():
 @app.route('/catalog/JSON', methods=['GET'])
 def showCatalogJSON():
     categories = session.query(Category).all()
-    return jsonify(Category=[i.serialize for i in categories])
+
+    return jsonify(categories = [i.serialize for i in categories])
 
 
 # Show all items from a category
@@ -117,16 +154,21 @@ def showCatalogJSON():
 @app.route('/catalog/<string:category_name>/<string:item_name>',
            methods=['GET'])
 def showItems(category_name, item_name):
+    loggedIn = 'access_token' in login_session \
+            and login_session['access_token'] is not None
+    name = ''
+    items = None
+    userId = None
+    if loggedIn:
+        name = login_session['name']
+        userId = getUserID(login_session['email'])
+
     if item_name == 'items':
         categories = session.query(Category).all()
+        
         items = session.query(Item).join(Category).filter(Category.name ==
-                                                          category_name)
-
-        loggedIn = 'access_token' in login_session \
-            and login_session['access_token'] is not None
-        name = ''
-        if loggedIn:
-            name = login_session['name']
+                                                            category_name
+                                                            )        
 
         return render_template(
             'catalog/itemsByCategory.html',
@@ -138,29 +180,35 @@ def showItems(category_name, item_name):
             )
     else:
         item = session.query(Item).join(Category).filter(Category.name ==
-                                                         category_name,
-                                                         Item.name == item_name
-                                                         ).first()
+                                                        category_name,
+                                                        Item.name == 
+                                                        item_name
+                                                        ).first()
 
-        loggedIn = 'access_token' in login_session \
-            and login_session['access_token'] is not None
-        name = ''
-        if loggedIn:
-            name = login_session['name']
-
+        enable_edit_and_delete_buttons = (loggedIn == 
+                                          True) and (item.user is None or  
+                                                     item.user.id == userId)
         return render_template('catalog/itemDetails.html',
                                category_name=category_name, item=item,
-                               loggedIn=loggedIn, name=name)
+                               loggedIn=loggedIn, name=name,
+                               enable_edit_and_delete_buttons=enable_edit_and_delete_buttons)
 
 
 # Create an Item
 
 @app.route('/catalog/items/new', methods=['GET', 'POST'])
 def newItem():
+    loggedIn = 'access_token' in login_session \
+        and login_session['access_token'] is not None
     if request.method == 'POST':
+        userId = None
+        if loggedIn:
+            userId = getUserID(login_session['email'])
+
         newItem = Item(name=request.form['name'],
                        description=request.form['description'],
-                       category_id=request.form['category_id'])
+                       category_id=request.form['category_id'],
+                       user_id=userId)
         session.add(newItem)
         session.commit()
         category = session.query(Category).filter(Category.id ==
@@ -171,8 +219,6 @@ def newItem():
                         item_name=request.form['name']))
     else:
         categories = session.query(Category).all()
-        loggedIn = 'access_token' in login_session \
-            and login_session['access_token'] is not None
         name = ''
         if loggedIn:
             name = login_session['name']
@@ -255,13 +301,21 @@ def deleteItem(category_name, item_name):
 @app.route('/catalog/<string:category_name>/<string:item_name>/JSON',
            methods=['GET'])
 def showItemsJSON(category_name, item_name):
+    loggedIn = 'access_token' in login_session \
+            and login_session['access_token'] is not None
+    userId = None
+    if loggedIn:
+        userId = getUserID(login_session['email'])
+
     category = session.query(Category).filter(Category.name == category_name
                                               ).first()
     if item_name == 'items':
         items = session.query(Item).filter(Item.category_id ==
                                            category.id)
-        return jsonify(Item=[i.serialize for i in items])
+        items_to_JSONinfy=[i.serialize for i in items]
+        return jsonify(items_to_JSONinfy)
     else:
         item = session.query(Item).filter(Item.category_id == category.id,
-                                          Item.name == item_name).first()
+                                          Item.name == item_name
+                                          ).first()
         return jsonify(item.serialize)
