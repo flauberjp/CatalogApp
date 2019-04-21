@@ -1,12 +1,19 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from database_setup import db_string, Category, Item
+from database_setup import db_string, Category, Item, User
 
 db = create_engine(db_string)
 
 Session = sessionmaker(db)
 session = Session()
+
+# Create a initial user
+email='flauberjp@gmail.com'
+new_user = User(name='Flaviano Flauber', email='flauberjp@gmail.com')
+session.add(new_user)
+session.commit()
+new_user = session.query(User).filter_by(email=email).one()
 
 # Create category Soccer
 soccer_category = Category(name="Soccer")
@@ -18,7 +25,8 @@ two_shinguards_item = Item(name="Two shinguards",
                            description="A shin guard or shin pad is a piece \
                            of equipment worn on the front of a player's shin \
                            to protect them from injury.",
-                           category=soccer_category)
+                           category=soccer_category,
+                           user_id=new_user.id)
 
 session.add(two_shinguards_item)
 session.commit()
@@ -38,7 +46,8 @@ snowboard_item = Item(name="Snowboard",
                       boarders ride all-mountain boards. Because of their \
                       versatility, all-mountain boards are good for \
                       beginners who are still learning what terrain they \
-                      like.", category=snowboarding_category)
+                      like.", category=snowboarding_category,
+                      user_id=new_user.id)
 
 session.add(snowboard_item)
 session.commit()
@@ -50,7 +59,8 @@ goggles_item = Item(name="Goggles",
                     in to the lodge early because you can’t see. On stormy \
                     days, the snow and cloudy grey skies can blend into one \
                     another, making it nearly impossible to see where you’re \
-                    riding.", category=snowboarding_category)
+                    riding.", category=snowboarding_category,
+                    user_id=new_user.id)
 
 session.add(goggles_item)
 session.commit()
