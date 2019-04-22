@@ -28,6 +28,8 @@
                             {% endfor %}
                         </select>
                     </div>
+                    
+                    <input id="user_email" name="user_email" type="hidden" value="{{user_email}}">
 
                     <input type='submit' value='Submit'>
                     <a href="{{ url_for('showCatalog') }}">Cancel</a>

@@ -200,10 +200,17 @@ def showItems(category_name, item_name):
 def newItem():
     loggedIn = 'access_token' in login_session \
         and login_session['access_token'] is not None
+    name = ''
+    user_email = ''
+    if loggedIn:
+        name = login_session['name']
+        user_email = login_session['email']
+
     if request.method == 'POST':
-        userId = None
-        if loggedIn:
-            userId = getUserID(login_session['email'])
+        if loggedIn == False and user_email == request.form['user_email']:
+            abort(403)
+
+        userId = getUserID(request.form['user_email'])
 
         newItem = Item(name=request.form['name'],
                        description=request.form['description'],
@@ -219,13 +226,11 @@ def newItem():
                         item_name=request.form['name']))
     else:
         categories = session.query(Category).all()
-        name = ''
-        if loggedIn:
-            name = login_session['name']
         return render_template('catalog/newItem.html',
                                categories=categories,
                                loggedIn=loggedIn,
-                               name=name)
+                               name=name,
+                               user_email=user_email)
 
 
 # Edit an Item
@@ -233,11 +238,21 @@ def newItem():
 @app.route('/catalog/<string:category_name>/<string:item_name>/edit',
            methods=['GET', 'POST'])
 def editItem(category_name, item_name):
+    loggedIn = 'access_token' in login_session \
+                and login_session['access_token'] is not None
+    name = ''
+    user_email = ''
+    if loggedIn:
+        name = login_session['name']
+        user_email = login_session['email']
+        
     item = session.query(Item).join(Category).filter(Category.name ==
                                                      category_name,
                                                      Item.name == item_name
                                                      ).first()
     if request.method == 'POST':
+        if loggedIn == False and user_email == request.form['user_email']:
+            abort(403)
         item.name = request.form['name']
         item.description = request.form['description']
         item.category_id = request.form['category_id']
@@ -250,11 +265,6 @@ def editItem(category_name, item_name):
                         item_name=item.name))
     else:
         categories = session.query(Category).all()
-        loggedIn = 'access_token' in login_session \
-                    and login_session['access_token'] is not None
-        name = ''
-        if loggedIn:
-            name = login_session['name']
 
         return render_template(
             'catalog/editItem.html',
@@ -264,6 +274,7 @@ def editItem(category_name, item_name):
             item=item,
             loggedIn=loggedIn,
             name=name,
+            user_email=user_email
             )
 
 
@@ -272,27 +283,31 @@ def editItem(category_name, item_name):
 @app.route('/catalog/<string:category_name>/<string:item_name>/delete',
            methods=['GET', 'POST'])
 def deleteItem(category_name, item_name):
+    loggedIn = 'access_token' in login_session \
+        and login_session['access_token'] is not None    
+    name = ''
+    user_email = ''
+    if loggedIn:
+        name = login_session['name']
+        user_email = login_session['email']
+
     itemToDelete = session.query(Item).join(Category).filter(Category.name ==
                                                              category_name,
                                                              Item.name ==
                                                              item_name).first()
     if request.method == 'POST':
+        if loggedIn == False and user_email == request.form['user_email']:
+            abort(403)
         session.delete(itemToDelete)
         session.commit()
         return redirect(url_for('showItems',
                         category_name=category_name, item_name='items'))
     else:
-
-        loggedIn = 'access_token' in login_session \
-                    and login_session['access_token'] is not None
-        name = ''
-        if loggedIn:
-            name = login_session['name']
-
         return render_template('catalog/deleteItem.html',
                                category_name=category_name,
                                item_name=item_name, loggedIn=loggedIn,
-                               name=name)
+                               name=name,
+                               user_email=user_email)
 
 
 # Equivalent of the method showItems(category_name, item_name),
