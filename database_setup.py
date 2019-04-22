@@ -3,7 +3,7 @@ import sys
 from sqlalchemy import create_engine
 from sqlalchemy import Column, ForeignKey, Integer, String, schema,  or_
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, backref
 from sqlalchemy_utils import database_exists, create_database
 from flask import url_for
 from sqlalchemy.orm import sessionmaker
@@ -28,6 +28,7 @@ class Category(base):
 
     id = Column(Integer, primary_key=True)
     name = Column(String, nullable=False)
+    items = relationship("Item", cascade="all, delete-orphan")
 
     @property
     def serialize(self):
@@ -56,6 +57,7 @@ class Item(base):
     category = relationship(Category)
     user_id = Column(Integer, ForeignKey('user.id'))
     user = relationship(User)
+
 
     @property
     def serialize(self):
