@@ -46,18 +46,18 @@ Here is a list of some of the required packages used. For a complete list, check
 
 
 ## Routes
-/, which redirects to /catalog
-/catalog
-/catalog/JSON
-/catalog/{category_name}/items
-/catalog/{category_name}/JSON
-/catalog/{category_name}/{item_name}/
-/catalog/{category_name}/{item_name}/edit
-/catalog/{category_name}/{item_name}/delete
-/catalog/{category_name}/{item_name}/JSON
-/catalog/items/new
-/storeauthcode, called by an ajax request actioned by Login to Google button
-/logout
+* /, which redirects to /catalog
+* /catalog
+* /catalog/JSON
+* /catalog/{category_name}/items
+* /catalog/{category_name}/JSON
+* /catalog/{category_name}/{item_name}/
+* /catalog/{category_name}/{item_name}/edit
+* /catalog/{category_name}/{item_name}/delete
+* /catalog/{category_name}/{item_name}/JSON
+* /catalog/items/new
+* /storeauthcode, called by an ajax request actioned by Login to Google button
+* /logout
 
 
 For item, the user shall be able to (C)reate, (U)pdate, and (D)elete only when 
