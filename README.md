@@ -36,7 +36,7 @@ must be valid. Refer to [10] for procedures.
 
 
 ## Python packages used
-Here is a list of some of the required packages used. For a complete list, check requirements.txt file for the completed list.
+Here is a list of some of the required packages used. For a complete list, check requirements.txt file.
 * sqlalchemy, v1.2.11
 * sqlalchemy-utils, v0.33.11
 * google-api-python-client, v1.7.8
